@@ -2,8 +2,15 @@ command :'profiles:list' do |c|
   c.syntax = 'ios profiles:list [development|distribution]'
   c.summary = 'Lists the Provisioning Profiles'
   c.description = ''
+  c.option '-u', '--username USER', 'Username'
+  c.option '-p', '--password PASSWORD', 'Password'
+  c.option '-tm', '--team TEAM', 'Team'
 
   c.action do |args, options|
+    agent.username = options.username unless options.username.nil?
+    agent.password = options.password unless options.password.nil?
+    agent.team = options.team unless options.team.nil?
+
     type = args.first.downcase.to_sym rescue nil
     profiles = try{agent.list_profiles(type ||= :development)}
 
@@ -34,8 +41,15 @@ command :'profiles:manage:devices' do |c|
   c.syntax = 'ios profiles:manage:devices'
   c.summary = 'Manage active devices for a development provisioning profile'
   c.description = ''
+  c.option '-u', '--username USER', 'Username'
+  c.option '-p', '--password PASSWORD', 'Password'
+  c.option '-tm', '--team TEAM', 'Team'
 
   c.action do |args, options|
+    agent.username = options.username unless options.username.nil?
+    agent.password = options.password unless options.password.nil?
+    agent.team = options.team unless options.team.nil?
+
     type = args.first.downcase.to_sym rescue nil
     profiles = try{agent.list_profiles(type ||= :development)}
 
@@ -72,8 +86,15 @@ command :'profiles:download' do |c|
   c.syntax = 'ios profiles:download'
   c.summary = 'Downloads the Provisioning Profiles'
   c.description = ''
+  c.option '-u', '--username USER', 'Username'
+  c.option '-p', '--password PASSWORD', 'Password'
+  c.option '-tm', '--team TEAM', 'Team'
 
   c.action do |args, options|
+    agent.username = options.username unless options.username.nil?
+    agent.password = options.password unless options.password.nil?
+    agent.team = options.team unless options.team.nil?
+
     type = args.first.downcase.to_sym rescue nil
     profiles = try{agent.list_profiles(type ||= :development)}
     profiles = profiles.find_all{|profile| profile.status == 'Active'}

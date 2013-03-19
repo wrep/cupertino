@@ -2,8 +2,15 @@ command :'certificates:list' do |c|
   c.syntax = 'ios certificates:list [development|distribution]'
   c.summary = 'Lists the Certificates'
   c.description = ''
+  c.option '-u', '--username USER', 'Username'
+  c.option '-p', '--password PASSWORD', 'Password'
+  c.option '-tm', '--team TEAM', 'Team'
 
   c.action do |args, options|
+    agent.username = options.username unless options.username.nil?
+    agent.password = options.password unless options.password.nil?
+    agent.team = options.team unless options.team.nil?
+
     type = args.first.downcase.to_sym rescue nil
     certificates = try{agent.list_certificates(type ||= :development)}
 
@@ -34,7 +41,7 @@ command :'certificates:download' do |c|
   c.syntax = 'ios certificates:download [development|distribution]'
   c.summary = 'Downloads the Certificates'
   c.description = ''
-  
+
   c.action do |args, options|
     type = args.first.downcase.to_sym rescue nil
     certificates = try{agent.list_certificates(type ||= :development)}
