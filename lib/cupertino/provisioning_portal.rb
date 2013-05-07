@@ -32,7 +32,7 @@ module Cupertino
       end
     end
 
-    class PassTypeID < Struct.new(:description, :id, :pass_certificates, :card_id)
+    class PassTypeID < Struct.new(:description, :id, :pass_certificates, :card_id, :status)
       def to_s
         "#{self.id} #{self.description}"
       end

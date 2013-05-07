@@ -265,6 +265,30 @@ module Cupertino
         app_ids
       end
 
+      def list_pass_type_ids
+        get('https://developer.apple.com/account/ios/identifiers/passTypeId/passTypeIdList.action')
+
+        regex = /passTypeIdDataURL = "([^"]*)"/
+        bundle_data_url = (page.body.match regex or raise UnexpectedContentError)[1]
+
+        get(bundle_data_url)
+        bundle_data = page.content
+        parsed_bundle_data = JSON.parse(bundle_data)
+
+        pass_type_ids = []
+        parsed_bundle_data['passTypeIdList'].each do |row|
+          pass_type_id = PassTypeID.new
+          pass_type_id.card_id = row['passTypeId']
+          pass_type_id.id = [row['prefix'], row['identifier']].join(".")
+          pass_type_id.description = row['name']
+          pass_type_id.status = row['status']
+
+          pass_type_ids << pass_type_id
+        end
+
+        pass_type_ids
+      end
+
       private
 
       def login!
